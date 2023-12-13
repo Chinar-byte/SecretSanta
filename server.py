@@ -1,110 +1,99 @@
 # Code modified off online
 
 import smtplib, ssl, random
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 port = 465  # For SSL
 smtp_server = "smtp.gmail.com"
 sender_email = "unisecretsanta2022@gmail.com"  # Enter your address
+password = 'imtckgbgohzufafu'
 
 # Receiver email has to be random generated
 participants = {
-    "mtkhawaja1453@gmail.com" : "Tahir", 
-    "akritichhetri5@gmail.com" : "Akriti", 
+    # "mtkhawaja1453@gmail.com" : "Tahir", 
     "vishwad001@gmail.com" : "Vishwa",
-    "aashayabharambe@gmail.com" : "Aashaya",
-    "vaasavmehta@gmail.com" : "Vaasav", 
+    # "aashayabharambe@gmail.com" : "Aashaya",
+    # "vaasavmehta@gmail.com" : "Vaasav", 
     "nehasuthar2003@gmail.com" : "Neha",
-    "aryaanbhatia1@gmail.com" : "Aryaan",
-    "sharaba229@gmail.com" : "Sharaba",
+    # "aryaanbhatia1@gmail.com" : "Aryaan",
+    # "sharaba229@gmail.com" : "Sharaba",
     "chinar2403@gmail.com" : "Chinar",
     }
 
-i = 0
-duplicates = []
-repeat = []
 
-email_ordered = []
-name_ordered = []
+# New code 
 
-while i < len(list(participants.keys())):
+assignments = {}
 
-    receiver_email = random.choice(list(participants.keys()))  # Enter receiver address
+emails = list(participants.keys())
+names_original = list(participants.values())
 
-    while receiver_email in repeat:
-        receiver_email = random.choice(list(participants.keys()))
+names = names_original.copy()
 
-    repeat.append(receiver_email)
-    # print(receiver_email)
+random.shuffle(emails)
+random.shuffle(names)
 
-    password = 'imtckgbgohzufafu'
+redo = True
 
-    name = random.choice(list(participants.values()))
+while redo == True: 
+    
+    names = names_original.copy()
 
-    count = 0
-    while name in duplicates or name == participants[receiver_email]:
-        name = random.choice(list(participants.values()))
+    for receiver in emails: 
 
-        if count > 20*len(list(participants.keys())):
-            name = participants[receiver_email]
+        duplicate_name = participants[receiver]
+        
+        names_temp = names.copy()
+
+        if duplicate_name in names_temp:
+            names_temp.remove(duplicate_name)
+
+        # Error check 
+        if len(names_temp) == 0:
+            assignments = {}
             break
+        
+        receiver_name = names_temp[0]
+        
+        print(f"{receiver} ==> {receiver_name}")
+        assignments[receiver] = receiver_name
+        
+        names.remove(receiver_name)
 
-        count = count + 1
-    
-    duplicates.append(name)
-    # print(name)
-    # print(duplicates)
-
-    email_ordered.append(receiver_email)
-    name_ordered.append(name)
-
-    i = i + 1
-
-i = 0
-
-while i < len(list(participants.keys())):
-
-    if participants[email_ordered[i]] == name_ordered[i]:
-
-        if i < len(list(participants.keys())) - 1:
-            temp = name_ordered[i]
-            email_ordered[i] == name_ordered[i + 1]
-            email_ordered[i + 1] == temp
-
-        if i == len(list(participants.keys())) - 1:
-            # print("Changing")
-            # temp = name_ordered[i]
-            # temp2 = email_ordered[i]
-            name_ordered[i], name_ordered[i - 1] = name_ordered[i - 1], name_ordered[i]
+        if len(names) == 0:
+            redo = False
+            break
+        
+        if duplicate_name in names:
+            names_temp.append(duplicate_name)
             
+    random.shuffle(emails)
 
 
-    receiver_email = email_ordered[i]
-    name = name_ordered[i]
-
-    i = i + 1
-
-i = 0
-while i < len(list(participants.keys())):
-
-    receiver_email = email_ordered[i]
-    name = name_ordered[i]
+for key in assignments.keys():
     
-    message = f"""\
-    Subject: Secret Santa
+    receiver_email = key
+    receiver = assignments[key]
 
-    TEST RUN ONLY
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = 'Secret Santa 2023'
+    
+    print(f"Sending to... {receiver_email} whose SS is {receiver}")
+    
+    body = f"""
 
-    You're secret santa is {name}
+        TEST RUN -> I"M LOOKING AT U NEHA DON"T TAKE THIS ONE SERIOUSLY
 
-    """
+        You're secret santa is {receiver}
 
-    print(f"{receiver_email} ==> {name}")
+        """
+
+    message.attach(MIMEText(body, "plain"))
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
         server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, message)
-
-    i = i + 1
-
-# print(duplicates)
+        server.sendmail(sender_email, receiver_email, message.as_string())
