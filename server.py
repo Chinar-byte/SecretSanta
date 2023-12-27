@@ -6,19 +6,22 @@ from email.mime.multipart import MIMEMultipart
 
 port = 465  # For SSL
 smtp_server = "smtp.gmail.com"
-sender_email = "unisecretsanta2022@gmail.com"  # Enter your address
+sender_email = "unisecretsanta2022@gmail.com"
 password = 'imtckgbgohzufafu'
 
 # Receiver email has to be random generated
 participants = {
-    # "mtkhawaja1453@gmail.com" : "Tahir", 
+    "mtkhawaja1453@gmail.com" : "Tahir", 
     "vishwad001@gmail.com" : "Vishwa",
-    # "aashayabharambe@gmail.com" : "Aashaya",
-    # "vaasavmehta@gmail.com" : "Vaasav", 
+    "aashayabharambe@gmail.com" : "Aashaya",
+    "vaasavmehta@gmail.com" : "Vaasav", 
     "nehasuthar2003@gmail.com" : "Neha",
-    # "aryaanbhatia1@gmail.com" : "Aryaan",
-    # "sharaba229@gmail.com" : "Sharaba",
+    "aryaanbhatia1@gmail.com" : "Aryaan",
+    "sharaba229@gmail.com" : "Sharaba",
     "chinar2403@gmail.com" : "Chinar",
+    "aadhya.gondekar@gmail.com" : "Aadhya",
+    "email.raunak@gmail.com" : "Ron",
+    "shreyasananthula@gmail.com" : "Shreyas"
     }
 
 
@@ -85,7 +88,7 @@ for key in assignments.keys():
     
     body = f"""
 
-        TEST RUN -> I"M LOOKING AT U NEHA DON"T TAKE THIS ONE SERIOUSLY
+        TEST RUN -> I"M LOOKING AT U TAHIR DON"T TAKE THIS ONE SERIOUSLY
 
         You're secret santa is {receiver}
 
