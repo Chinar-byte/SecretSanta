@@ -88,8 +88,6 @@ for key in assignments.keys():
     
     body = f"""
 
-        TEST RUN -> I"M LOOKING AT U TAHIR DON"T TAKE THIS ONE SERIOUSLY
-
         You're secret santa is {receiver}
 
         """
